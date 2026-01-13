@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /coachPro_MVC/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Fallback: If mod_rewrite is disabled, route via 404 handler
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 /coachPro_MVC/index.php
+</IfModule>
