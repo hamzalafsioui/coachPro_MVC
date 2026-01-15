@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule - CoachPro</title>
+    <title>Manage Availability - CoachPro</title>
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/css/coach_schedule.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/css/coach_availability.css">
 
     <!-- Global Tailwind Config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="<?= BASE_URL ?>/public/assets/js/tailwind.config.js"></script>
+
 </head>
 
 <body class="text-gray-300 font-inter antialiased min-h-screen flex">
@@ -45,12 +46,12 @@
                     <span class="font-medium">Dashboard</span>
                 </a>
 
-                <a href="<?= BASE_URL ?>/coach/seances" class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:text-white group text-gray-400">
+                <a href="<?= BASE_URL ?>/coach/seances" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:text-white group text-gray-400">
                     <i class="fas fa-calendar-alt w-6 text-center group-hover:text-cyan-400 transition-colors"></i>
                     <span class="font-medium">My Schedule</span>
                 </a>
 
-                <a href="<?= BASE_URL ?>/coach/availability" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:text-white group text-gray-400">
+                <a href="<?= BASE_URL ?>/coach/availability" class="sidebar-link active flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 hover:bg-white/5 hover:text-white group text-gray-400">
                     <i class="fas fa-clock w-6 text-center group-hover:text-green-400 transition-colors"></i>
                     <span class="font-medium">Availability</span>
                 </a>
@@ -89,52 +90,65 @@
 
     <!-- Main Content -->
     <main class="flex-1 w-full overflow-y-auto h-screen scroll-smooth">
-        <div class="p-8 max-w-7xl mx-auto space-y-6">
+        <div class="p-8 max-w-6xl mx-auto space-y-8">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 class="text-3xl font-outfit font-bold text-white mb-2">My Schedule</h1>
-                    <p class="text-gray-400">View and manage your upcoming sessions.</p>
+                    <h1 class="text-3xl font-outfit font-bold text-white mb-2">Availability Settings</h1>
+                    <p class="text-gray-400">Set your weekly recurring schedule.</p>
                 </div>
+                <button onclick="saveAvailability()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white px-8 py-3 rounded-xl font-medium shadow-lg shadow-blue-500/25 transition-all transform hover:scale-105 flex items-center gap-2">
+                    <i class="fas fa-save"></i>
+                    <span>Save Changes</span>
+                </button>
             </div>
 
-            <!-- Calendar Container -->
-            <div class="flex flex-col glass-panel rounded-2xl overflow-hidden mt-8">
-                <!-- Calendar Header -->
-                <div class="calendar-header p-6 flex items-center justify-between border-b border-gray-700/50">
-                    <div>
-                        <h2 id="monthYear" class="text-2xl font-bold text-white font-outfit"></h2>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="prevMonth()" class="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button onclick="nextMonth()" class="p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
+            <!-- Weekly Schedule -->
+            <div class="space-y-6">
+                <?php if (isset($availability)): ?>
+                    <?php foreach ($availability as $day => $data): ?>
+                        <div class="glass-panel p-6 rounded-2xl day-card" id="<?= $day; ?>-card">
+                            <div class="flex flex-col md:flex-row md:items-start gap-6">
+                                <!-- Day Toggle -->
+                                <div class="w-full md:w-48 flex items-center justify-between md:justify-start gap-4">
+                                    <h3 class="capitalize font-bold text-lg text-white w-24"><?= $day; ?></h3>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="<?= $day; ?>-toggle" class="sr-only peer" <?= $data['active'] ? 'checked' : ''; ?>>
+                                        <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
 
-                <!-- Days Header -->
-                <div class="grid grid-cols-7 bg-gray-800/30 border-b border-gray-700/50">
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Sun</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Mon</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Tue</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Wed</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Thu</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Fri</div>
-                    <div class="weekday-header py-4 text-center text-xs font-bold text-gray-500 uppercase">Sat</div>
-                </div>
+                                <!-- Time Slots -->
+                                <div class="flex-1 <?= $data['active'] ? '' : 'opacity-50 pointer-events-none'; ?>" id="<?= $day; ?>-slots">
+                                    <div id="<?= $day; ?>-slots-container">
+                                        <?php if (isset($data['slots'])): ?>
+                                            <?php foreach ($data['slots'] as $slot): ?>
+                                                <div class="flex items-center gap-2 mb-2 time-slot">
+                                                    <input type="time" name="<?= $day; ?>_start[]" value="<?= $slot[0] ?? ''; ?>" class="time-input bg-gray-800 border-gray-700 rounded-lg px-3 py-2 text-sm text-white w-32">
+                                                    <span class="text-gray-500">-</span>
+                                                    <input type="time" name="<?= $day; ?>_end[]" value="<?= $slot[1] ?? ''; ?>" class="time-input bg-gray-800 border-gray-700 rounded-lg px-3 py-2 text-sm text-white w-32">
+                                                    <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 p-2 transition-colors">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
 
-                <!-- Calendar Grid -->
-                <div class="calendar-grid grid grid-cols-7 auto-rows-fr">
-                    <!-- Javascript will populate this -->
-                </div>
+                                    <button type="button" id="<?= $day; ?>-add-btn" class="mt-2 text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors <?= $data['active'] ? '' : 'opacity-50 cursor-not-allowed'; ?>" <?= $data['active'] ? '' : 'disabled'; ?>>
+                                        <i class="fas fa-plus-circle"></i>
+                                        <span>Add Interval</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </main>
 
-    <!-- Specific JS -->
-    <script src="<?= BASE_URL ?>/public/assets/js/coach_schedule.js"></script>
+    <!-- JS -->
+    <script src="<?= BASE_URL ?>/public/assets/js/coach_availability.js"></script>
 </body>
 
 </html>
