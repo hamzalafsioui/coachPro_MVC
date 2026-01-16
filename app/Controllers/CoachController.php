@@ -114,10 +114,14 @@ class CoachController extends Controller
 
     public function availability(): void
     {
-        $user = $this->checkAuth();
         
+        $user = $this->checkAuth();
+        $coachObj = $this->coachRepo->findByUserId((int)$user['id']);
+        $coachId = $coachObj ? $coachObj->getCoachId() : null;
+
+        $availability = new AvailabilityRepository()->getRecurringSchedule($coachId);
         $this->render('coach.availability', [
-            'availability' => [],
+            'availability' => $availability,
             'user' => $user
         ]);
     }
