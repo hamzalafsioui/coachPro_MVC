@@ -16,7 +16,7 @@
 <body class="gradient-bg min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
-            <a href="<?= BASE_URL ?>/" class="inline-flex items-center space-x-3 mb-6">
+            <a href="<?= BASE_URL ?>/home" class="inline-flex items-center space-x-3 mb-6">
                 <span class="text-white text-3xl font-outfit font-bold">CoachPro</span>
             </a>
             <h1 class="text-4xl font-outfit font-bold text-white mb-2">Welcome Back</h1>

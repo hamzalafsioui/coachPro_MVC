@@ -1,84 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoachPro - Your Personal Fitness Journey Starts Here</title>
-    <meta name="description" content="Connect with professional sports coaches, book sessions, and achieve your fitness goals with CoachPro - the ultimate platform for athletes and coaches.">
-
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../public/assets/css/style.css">
-
-    <!-- Tailwind Config -->
-    <script src="../../public/assets/js/tailwind.config.js"></script>
-</head>
-
-<body class="gradient-bg min-h-screen">
-
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-dark backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 gradient-blue rounded-lg flex items-center justify-center pulse-glow">
-                        <i class="fas fa-dumbbell text-white text-2xl"></i>
-                    </div>
-                    <span class="text-white text-2xl font-outfit font-bold">CoachPro</span>
-                </div>
-
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-gray-300 hover:text-white smooth-transition font-medium">Home</a>
-                    <a href="#features" class="text-gray-300 hover:text-white smooth-transition font-medium">Features</a>
-                    <a href="#how-it-works" class="text-gray-300 hover:text-white smooth-transition font-medium">How It Works</a>
-                    <a href="#coaches" class="text-gray-300 hover:text-white smooth-transition font-medium">Find Coaches</a>
-                    <a href="#pricing" class="text-gray-300 hover:text-white smooth-transition font-medium">Pricing</a>
-                </div>
-
-                <!-- Auth Buttons -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="pages/auth/login.php" class="text-white hover:text-gray-300 smooth-transition font-medium">Login</a>
-                    <a href="pages/auth/register.php" class="gradient-blue px-6 py-2.5 rounded-lg text-white font-semibold hover-scale smooth-transition shadow-lg">
-                        Get Started
-                    </a>
-                </div>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobileMenuBtn" class="md:hidden text-white">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden glass-dark">
-            <div class="px-4 pt-2 pb-4 space-y-3">
-                <a href="#home" class="block text-gray-300 hover:text-white smooth-transition py-2">Home</a>
-                <a href="#features" class="block text-gray-300 hover:text-white smooth-transition py-2">Features</a>
-                <a href="#how-it-works" class="block text-gray-300 hover:text-white smooth-transition py-2">How It Works</a>
-                <a href="#coaches" class="block text-gray-300 hover:text-white smooth-transition py-2">Find Coaches</a>
-                <a href="#pricing" class="block text-gray-300 hover:text-white smooth-transition py-2">Pricing</a>
-                <div class="pt-4 space-y-3">
-                    <a href="pages/auth/login.php" class="block text-center text-white border border-white px-6 py-2.5 rounded-lg font-semibold">Login</a>
-                    <a href="pages/auth/register.php" class="block text-center gradient-blue px-6 py-2.5 rounded-lg text-white font-semibold">Get Started</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
     <section id="home" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
@@ -95,7 +14,7 @@
                         Connect with certified professional coaches, book personalized training sessions, and achieve your fitness goals faster with CoachPro's innovative platform.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="pages/auth/register.php" class="gradient-blue px-8 py-4 rounded-lg text-white font-semibold text-lg hover-scale smooth-transition shadow-2xl flex items-center justify-center space-x-2">
+                        <a href="<?= BASE_URL ?>/register" class="gradient-blue px-8 py-4 rounded-lg text-white font-semibold text-lg hover-scale smooth-transition shadow-2xl flex items-center justify-center space-x-2">
                             <span>Start Your Journey</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -301,7 +220,7 @@
                     Join thousands of athletes and fitness enthusiasts who have already taken the first step towards their goals.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="pages/auth/register.php" class="gradient-blue px-10 py-4 rounded-lg text-white font-bold text-lg hover-scale smooth-transition shadow-2xl">
+                    <a href="<?= BASE_URL ?>/register" class="gradient-blue px-10 py-4 rounded-lg text-white font-bold text-lg hover-scale smooth-transition shadow-2xl">
                         Start Free Trial
                     </a>
                     <a href="#coaches" class="glass border border-white/20 px-10 py-4 rounded-lg text-white font-bold text-lg hover-scale smooth-transition">
@@ -311,74 +230,3 @@
             </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="glass-dark py-12 px-4 sm:px-6 lg:px-8 mt-20">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <!-- Brand -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 gradient-blue rounded-lg flex items-center justify-center">
-                            <i class="fas fa-dumbbell text-white text-xl"></i>
-                        </div>
-                        <span class="text-white text-xl font-outfit font-bold">CoachPro</span>
-                    </div>
-                    <p class="text-gray-400 text-sm">
-                        Empowering athletes and coaches to achieve greatness together.
-                    </p>
-                </div>
-
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#features" class="hover:text-white smooth-transition">Features</a></li>
-                        <li><a href="#how-it-works" class="hover:text-white smooth-transition">How It Works</a></li>
-                        <li><a href="#pricing" class="hover:text-white smooth-transition">Pricing</a></li>
-                        <li><a href="#coaches" class="hover:text-white smooth-transition">Find Coaches</a></li>
-                    </ul>
-                </div>
-
-                <!-- Support -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li><a href="#" class="hover:text-white smooth-transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white smooth-transition">Contact Us</a></li>
-                        <li><a href="#" class="hover:text-white smooth-transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white smooth-transition">Terms of Service</a></li>
-                    </ul>
-                </div>
-
-                <!-- Social -->
-                <div>
-                    <h4 class="text-white font-semibold mb-4">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 glass-dark rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover-scale smooth-transition">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 glass-dark rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover-scale smooth-transition">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 glass-dark rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover-scale smooth-transition">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 glass-dark rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover-scale smooth-transition">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
-                <p>&copy; <?php echo date('Y'); ?> CoachPro. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- script js -->
-    <script src="../../public/assets/js/main.js"></script>
-</body>
-
-</html>
