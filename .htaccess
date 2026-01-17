@@ -7,6 +7,9 @@
 </IfModule>
 
 # Fallback: If mod_rewrite is disabled, route via 404 handler
+
 <IfModule !mod_rewrite.c>
-    ErrorDocument 404 /coachPro_MVC/index.php
+ErrorDocument 404 /coachPro_MVC/index.php
+
+
 </IfModule>
