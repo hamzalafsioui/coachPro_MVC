@@ -13,7 +13,7 @@ class CoachController extends Controller
 {
     private CoachRepository $coachRepo;
     private ReservationRepository $reservationRepo;
-    private AvailabilityRepository $availabilityRepo; 
+    private AvailabilityRepository $availabilityRepo;
 
     public function __construct()
     {
@@ -40,7 +40,7 @@ class CoachController extends Controller
         $user = $this->checkAuth();
         $userId = (int)$user['id'];
 
-        
+
         $coachObj = $this->coachRepo->findByUserId($userId);
 
         if (!$coachObj) {
@@ -86,7 +86,7 @@ class CoachController extends Controller
 
         $reservations = [];
         if ($coachId) {
-            $reservations = $this->reservationRepo->getCoachUpcomingSessions($coachId);
+            $reservations = $this->reservationRepo->getByCoach($coachId);
         }
 
         $this->render('coach.reservations', [
@@ -114,7 +114,7 @@ class CoachController extends Controller
 
     public function availability(): void
     {
-        
+
         $user = $this->checkAuth();
         $coachObj = $this->coachRepo->findByUserId((int)$user['id']);
         $coachId = $coachObj ? $coachObj->getCoachId() : null;
@@ -124,6 +124,49 @@ class CoachController extends Controller
             'availability' => $availability,
             'user' => $user
         ]);
+    }
+
+    public function saveAvailability(): void
+    {
+        
+        header('Content-Type: application/json');
+
+        
+
+        $user = $_SESSION['user'];
+
+        $coachObj = $this->coachRepo->findByUserId((int)$user['id']);
+        $coachId = $coachObj ? $coachObj->getCoachId() : null;
+
+        if (!$coachId) {
+            error_log("saveAvailability: Coach not found for user ID " . $user['id']);
+            echo json_encode(['success' => false, 'message' => 'Coach not found']);
+            return;
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        error_log("saveAvailability: Input data: " . print_r($input, true));
+
+        $schedule = $input['schedule'] ?? null;
+
+        if (!$schedule) {
+            error_log("saveAvailability: Invalid schedule data");
+            echo json_encode(['success' => false, 'message' => 'Invalid schedule data']);
+            return;
+        }
+
+        try {
+            $success = $this->availabilityRepo->saveCoachAvailability($coachId, $schedule);
+
+            if ($success) {
+                echo json_encode(['success' => true]);
+            } else {
+                error_log("saveAvailability: Failed to save for coach ID $coachId");
+                echo json_encode(['success' => false, 'message' => 'Failed to save availability']);
+            }
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+        }
     }
 
     public function clients(): void
