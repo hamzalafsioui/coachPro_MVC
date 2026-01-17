@@ -28,10 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
   searchInput.addEventListener("input", filterCoaches);
   specialtyFilter.addEventListener("change", filterCoaches);
 
-  // Book button handler (Mock)
+  // Book button handler
   window.handleBooking = function (coachId) {
-    // Redirect to the detailed profile page
-    window.location.href = "coach_profile.php?id=" + coachId;
+    // Redirect to the detailed profile page (MVC Route)
+    window.location.href = "/coachPro_MVC/sportif/coach/" + coachId;
   };
 });
 

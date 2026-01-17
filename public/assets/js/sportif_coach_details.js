@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const sections = document.querySelectorAll(".content-section");
   const timeSlots = document.querySelectorAll(".time-slot");
   const bookBtn = document.getElementById("bookSessionBtn");
+  const selectedAvailabilityInput = document.getElementById(
+    "selected_availability_id"
+  );
 
   // Tab Switching
   tabs.forEach((tab) => {
@@ -10,8 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const target = tab.getAttribute("data-target");
 
       // Update tabs
-      tabs.forEach((t) => t.classList.remove("active"));
-      tab.classList.add("active");
+      tabs.forEach((t) => t.classList.remove("active", "text-white"));
+      tabs.forEach((t) => t.classList.add("text-gray-400"));
+      tab.classList.remove("text-gray-400");
+      tab.classList.add("active", "text-white");
 
       // Update sections
       sections.forEach((s) => s.classList.add("hidden"));
@@ -19,21 +24,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Time Slot Selection
-  let selectedSlotTime = null;
-  let selectedSlotId = null;
-
+  // Time Slot Selection logic
   timeSlots.forEach((slot) => {
     slot.addEventListener("click", () => {
-      if (slot.classList.contains("disabled")) return;
-
       // Deselect others
-      timeSlots.forEach((s) => s.classList.remove("selected"));
+      timeSlots.forEach((s) => {
+        s.classList.remove("bg-blue-600", "text-white", "border-blue-500");
+        s.classList.add("bg-gray-800/50", "text-gray-300", "border-gray-700");
+      });
 
       // Select clicked
-      slot.classList.add("selected");
-      selectedSlotTime = slot.getAttribute("data-time");
-      selectedSlotId = slot.getAttribute("data-id");
+      slot.classList.remove(
+        "bg-gray-800/50",
+        "text-gray-300",
+        "border-gray-700"
+      );
+      slot.classList.add("bg-blue-600", "text-white", "border-blue-500");
+
+      const selectedSlotTime = slot.getAttribute("data-time");
+      const selectedSlotId = slot.getAttribute("data-id");
+
+      if (selectedAvailabilityInput) {
+        selectedAvailabilityInput.value = selectedSlotId;
+      }
 
       // Enable book button
       if (bookBtn) {
@@ -43,55 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // Book Button Handler
-  if (bookBtn) {
-    bookBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (!selectedSlotId) return;
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const coachId = urlParams.get("id");
-
-      if (!coachId) {
-        alert("Coach ID not found.");
-        return;
-      }
-
-      bookBtn.disabled = true;
-      bookBtn.textContent = "Processing...";
-
-      try {
-        const response = await fetch("../../actions/reservations/create.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            coach_id: parseInt(coachId),
-            availability_id: parseInt(selectedSlotId),
-            price: 50.0, // Hardcoded for now as per dashboard
-          }),
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert("Reservation successful!");
-          window.location.href = "reservations.php";
-        } else {
-          alert("Error: " + result.message);
-          bookBtn.disabled = false;
-          bookBtn.textContent = `Book for ${selectedSlotTime}`;
-        }
-      } catch (error) {
-        console.error("Error booking session:", error);
-        alert("An unexpected error occurred.");
-        bookBtn.disabled = false;
-        bookBtn.textContent = `Book for ${selectedSlotTime}`;
-      }
-    });
-  }
 });
 
 function toggleSidebar() {

@@ -42,16 +42,25 @@ async function handleAction(action, id) {
   if (confirm(confirmMsg)) {
     const card = document.querySelector(`.reservation-card[data-id="${id}"]`);
 
+    // Get base URL
+    const baseUrl =
+      typeof BASE_URL !== "undefined"
+        ? BASE_URL
+        : window.location.origin + "/coachPro_MVC";
+
     // Choose endpoint based on action
-    let endpoint = "../../actions/reservations/update.php";
+    let endpoint = baseUrl + "/coach/reservations/update";
     let body = { id: id, action: action };
 
     if (action === "delete") {
-      endpoint = "../../actions/reservations/delete.php";
+      endpoint = baseUrl + "/coach/reservations/delete";
       body = { id: id };
     }
 
     try {
+      console.log("Sending request to:", endpoint);
+      console.log("Request body:", body);
+
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -60,7 +69,10 @@ async function handleAction(action, id) {
         body: JSON.stringify(body),
       });
 
+      console.log("Response status:", response.status);
+
       const result = await response.json();
+      console.log("Response data:", result);
 
       if (result.success) {
         if (action === "decline" || action === "cancel") {
@@ -70,7 +82,6 @@ async function handleAction(action, id) {
               badge.className = "status-badge status-cancelled";
               badge.textContent = "Cancelled";
             }
-            
           }
         } else if (action === "accept") {
           if (card) {
@@ -92,13 +103,24 @@ async function handleAction(action, id) {
           if (card) card.remove();
         }
 
-       
+        alert("Reservation updated successfully!");
       } else {
-        alert("Error: " + result.message);
+        // Show the actual error message from the server
+        const errorMsg = result.message || "Unknown error occurred";
+        alert("Error: " + errorMsg);
+        console.error("Server error:", result);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while processing the request.");
+      console.error("Error details:", {
+        action: action,
+        id: id,
+        endpoint: endpoint,
+        error: error.message,
+      });
+      alert(
+        "An error occurred while processing the request. Check console for details."
+      );
     }
   }
 }
