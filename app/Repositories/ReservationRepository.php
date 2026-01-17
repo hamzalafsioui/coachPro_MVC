@@ -229,4 +229,11 @@ ORDER BY a.date DESC, a.start_time DESC;
         $data = $stmt->fetch();
         return $data ?: null;
     }
+
+    public function getStatusIdByName(string $name): int
+    {
+        $stmt = $this->db->prepare("SELECT id FROM statuses WHERE name = ?");
+        $stmt->execute([$name]);
+        return (int)$stmt->fetchColumn();
+    }
 }
