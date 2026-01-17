@@ -6,6 +6,7 @@ class Controller
     {
         $viewFile = $this->resolveViewPath($view);
         if (!is_file($viewFile)) {
+
             throw new RuntimeException("View not found: {$viewFile}");
         }
 
