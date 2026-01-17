@@ -178,7 +178,11 @@
     </main>
 
     <!-- JS -->
-    <script src="<?= BASE_URL ?>/public/assets/js/coach_reservations.js"></script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+        console.log('BASE_URL:', BASE_URL);
+    </script>
+    <script src="<?= BASE_URL ?>/public/assets/js/coach_reservations.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

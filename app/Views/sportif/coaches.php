@@ -84,6 +84,22 @@
                 </div>
             </div>
 
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="bg-green-500/10 border border-green-500/20 text-green-400 px-6 py-4 rounded-2xl flex items-center gap-3">
+                    <i class="fas fa-check-circle"></i>
+                    <p class="text-sm font-medium"><?= $_SESSION['success'];
+                                                    unset($_SESSION['success']); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl flex items-center gap-3">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p class="text-sm font-medium"><?= $_SESSION['error'];
+                                                    unset($_SESSION['error']); ?></p>
+                </div>
+            <?php endif; ?>
+
             <!-- Filters -->
             <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
                 <div class="search-input-wrapper flex-1 w-full relative">

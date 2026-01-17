@@ -83,6 +83,22 @@
                 </div>
             </div>
 
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="bg-green-500/10 border border-green-500/20 text-green-400 px-6 py-4 rounded-2xl flex items-center gap-3">
+                    <i class="fas fa-check-circle"></i>
+                    <p class="text-sm font-medium"><?= $_SESSION['success'];
+                                                    unset($_SESSION['success']); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl flex items-center gap-3">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p class="text-sm font-medium"><?= $_SESSION['error'];
+                                                    unset($_SESSION['error']); ?></p>
+                </div>
+            <?php endif; ?>
+
             <!-- Filters -->
             <div class="flex flex-wrap gap-2">
                 <button class="filter-btn active bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium" data-filter="all">All</button>
@@ -208,7 +224,10 @@
     </div>
 
     <!-- JS -->
-    <script src="<?= BASE_URL ?>/public/assets/js/sportif_reservations.js"></script>
+    <script>
+        const BASE_URL = '<?= BASE_URL ?>';
+    </script>
+    <script src="<?= BASE_URL ?>/public/assets/js/sportif_reservations.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

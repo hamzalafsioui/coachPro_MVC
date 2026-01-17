@@ -154,7 +154,7 @@
                                             <h3 class="font-bold text-white text-lg"><?= htmlspecialchars($review['client']); ?></h3>
                                             <p class="text-sm text-gray-400"><?= htmlspecialchars($review['session_type'] ?? 'Session'); ?></p>
                                         </div>
-                                        <span class="text-xs text-gray-500 mt-1 md:mt-0"><?= htmlspecialchars($review['date']); ?></span>
+                                        <span class="text-xs text-gray-500 mt-1 md:mt-0"><?= htmlspecialchars(new DateTime($review['created_at'])->format('d M Y')); ?></span>
                                     </div>
 
                                     <div class="flex gap-1 text-yellow-500 text-sm mb-3">
