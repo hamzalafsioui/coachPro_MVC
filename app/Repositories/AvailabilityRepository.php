@@ -126,4 +126,10 @@ class AvailabilityRepository implements AvailabilityRepositoryInterface
 
         return $schedule;
     }
+
+    public function updateStatus(int $id, bool $isAvailable): bool
+    {
+        $stmt = $this->db->prepare("UPDATE availabilities SET is_available = ? WHERE id = ?");
+        return $stmt->execute([$isAvailable ? 'true' : 'false', $id]);
+    }
 }
