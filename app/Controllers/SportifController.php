@@ -117,4 +117,56 @@ class SportifController extends Controller
             'user' => $user
         ]);
     }
+
+    public function coachDetails(int $id): void
+    {
+        $user = $this->checkAuth();
+
+        $coachRepo = new \App\Repositories\CoachRepository();
+        $coach = $coachRepo->find($id);
+
+        if (!$coach) {
+            $this->redirect('/sportif/coaches');
+            return;
+        }
+
+        $availabilityRepo = new \App\Repositories\AvailabilityRepository();
+        $raw_availabilities = $availabilityRepo->getByCoachId($id);
+
+        $availability_by_date = [];
+        foreach ($raw_availabilities as $row) {
+            
+            if (isset($row['is_available']) && !$row['is_available']) continue;
+
+            
+            $today = date('Y-m-d');
+            if (strtotime((string)$row['date']) < strtotime($today)) continue;
+
+            $date_key = (string)$row['date'];
+            if (!isset($availability_by_date[$date_key])) {
+                $availability_by_date[$date_key] = [];
+            }
+
+            $availability_by_date[$date_key][] = [
+                'id' => (int)$row['id'],
+                'time' => date('H:i', strtotime((string)$row['start_time'])),
+                'date' => $row['date']
+            ];
+        }
+
+        // Sort and limit
+        ksort($availability_by_date);
+        $availability_by_date = array_slice($availability_by_date, 0, 14, true);
+
+        $reviewRepo = new \App\Repositories\ReviewRepository();
+        $reviews = $reviewRepo->getCoachReviews($id);
+
+        $this->render('sportif.coach_details', [
+            'coach' => $coach,
+            'specialties' => $coachRepo->getSpecialties($id),
+            'availability_by_date' => $availability_by_date,
+            'reviews' => $reviews,
+            'user' => $user
+        ]);
+    }
 }
